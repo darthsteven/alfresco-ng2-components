@@ -27,7 +27,7 @@ describe('ClaimTaskDirective', () => {
 
     @Component({
         selector:  'adf-claim-test-component',
-        template: '<button adf-cloud-claim-task [taskId]="taskMock" [appName]="appNameMock" (success)="onClaimTask($event)"></button>'
+        template: '<button adf-cloud-claim-task [taskId]="taskMock" [appName]="appNameMock"></button>'
     })
     class TestComponent {
 
@@ -36,10 +36,6 @@ describe('ClaimTaskDirective', () => {
 
         @ViewChild(ClaimTaskDirective)
         claimTaskDirective: ClaimTaskDirective;
-
-        onCompleteTask(event: any) {
-            return event;
-        }
     }
 
     let fixture: ComponentFixture<TestComponent>;

@@ -40,6 +40,7 @@ import { NoPermissionTemplateDirective } from './directives/no-permission-templa
 import { CustomEmptyContentTemplateDirective } from './directives/custom-empty-content-template.directive';
 import { CustomLoadingContentTemplateDirective } from './directives/custom-loading-template.directive';
 import { CustomNoPermissionTemplateDirective } from './directives/custom-no-permission-template.directive';
+import { CopyClipboardComponent, CopyClipboardDirective } from './directives/copy-clipboard.directive';
 
 @NgModule({
     imports: [
@@ -66,7 +67,9 @@ import { CustomNoPermissionTemplateDirective } from './directives/custom-no-perm
         LoadingContentTemplateDirective,
         CustomEmptyContentTemplateDirective,
         CustomLoadingContentTemplateDirective,
-        CustomNoPermissionTemplateDirective
+        CustomNoPermissionTemplateDirective,
+        CopyClipboardComponent,
+        CopyClipboardDirective
     ],
     exports: [
         DataTableComponent,
@@ -83,7 +86,10 @@ import { CustomNoPermissionTemplateDirective } from './directives/custom-no-perm
         LoadingContentTemplateDirective,
         CustomEmptyContentTemplateDirective,
         CustomLoadingContentTemplateDirective,
-        CustomNoPermissionTemplateDirective
-    ]
+        CustomNoPermissionTemplateDirective,
+        CopyClipboardDirective
+    ],
+    entryComponents: [CopyClipboardComponent]
+
 })
 export class DataTableModule {}
