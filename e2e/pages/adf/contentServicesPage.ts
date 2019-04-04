@@ -29,6 +29,14 @@ import { BrowserVisibility } from '@alfresco/adf-testing';
 
 export class ContentServicesPage {
 
+    columns = {
+        name: 'Display name',
+        size: 'Size',
+        nodeId: 'Node id',
+        createdBy: 'Created by',
+        created: 'Created'
+    }
+
     contentList = new DocumentListPage(element.all(by.css('adf-upload-drag-area adf-document-list')).first());
     formControllersPage = new FormControllersPage();
     multipleFileUploadToggle = element(by.id('adf-document-list-enable-drop-files'));
@@ -182,15 +190,15 @@ export class ContentServicesPage {
     }
 
     getElementsDisplayedSize() {
-        return this.contentList.dataTablePage().getAllRowsColumnValues('Size');
+        return this.contentList.dataTablePage().getAllRowsColumnValues(this.columns.size);
     }
 
     getElementsDisplayedName() {
-        return this.contentList.dataTablePage().getAllRowsColumnValues('Display name');
+        return this.contentList.dataTablePage().getAllRowsColumnValues(this.columns.name);
     }
 
     getElementsDisplayedId() {
-        return this.contentList.dataTablePage().getAllRowsColumnValues('Node id');
+        return this.contentList.dataTablePage().getAllRowsColumnValues(this.columns.nodeId);
     }
 
     checkElementsSortedAsc(elements) {
@@ -327,7 +335,7 @@ export class ContentServicesPage {
     }
 
     getAllRowsNameColumn() {
-        return this.contentList.getAllRowsColumnValues('Display name');
+        return this.contentList.getAllRowsColumnValues(this.columns.name);
     }
 
     sortByName(sortOrder) {
@@ -352,19 +360,19 @@ export class ContentServicesPage {
     }
 
     async checkListIsSortedByNameColumn(sortOrder) {
-        return await this.contentList.dataTablePage().checkListIsSorted(sortOrder, 'Display name');
+        return await this.contentList.dataTablePage().checkListIsSorted(sortOrder, this.columns.name);
     }
 
     async checkListIsSortedByCreatedColumn(sortOrder) {
-        return await this.contentList.dataTablePage().checkListIsSorted(sortOrder, 'Created');
+        return await this.contentList.dataTablePage().checkListIsSorted(sortOrder, this.columns.created);
     }
 
     async checkListIsSortedByAuthorColumn(sortOrder) {
-        return await this.contentList.dataTablePage().checkListIsSorted(sortOrder, 'Created by');
+        return await this.contentList.dataTablePage().checkListIsSorted(sortOrder, this.columns.createdBy);
     }
 
     async checkListIsSortedBySizeColumn(sortOrder) {
-        return await this.contentList.dataTablePage().checkListIsSorted(sortOrder, 'Size');
+        return await this.contentList.dataTablePage().checkListIsSorted(sortOrder, this.columns.size);
     }
 
     sortAndCheckListIsOrderedByAuthor(sortOrder) {
@@ -412,7 +420,7 @@ export class ContentServicesPage {
     }
 
     checkContentIsDisplayed(content) {
-        this.contentList.dataTablePage().checkContentIsDisplayed('Display name', content);
+        this.contentList.dataTablePage().checkContentIsDisplayed(this.columns.name, content);
         return this;
     }
 
@@ -424,7 +432,7 @@ export class ContentServicesPage {
     }
 
     checkContentIsNotDisplayed(content) {
-        this.contentList.dataTablePage().checkContentIsNotDisplayed('Display name', content);
+        this.contentList.dataTablePage().checkContentIsNotDisplayed(this.columns.name, content);
         return this;
     }
 
@@ -567,7 +575,7 @@ export class ContentServicesPage {
     }
 
     getColumnValueForRow(file, columnName) {
-        return this.contentList.dataTablePage().getColumnValueForRow('Display name', file, columnName);
+        return this.contentList.dataTablePage().getColumnValueForRow(this.columns.name, file, columnName);
     }
 
     async getStyleValueForRowText(rowName, styleName) {
@@ -667,7 +675,7 @@ export class ContentServicesPage {
     }
 
     checkRowIsDisplayed(rowName) {
-        const row = this.contentList.dataTablePage().getRowElement('Display name', rowName);
+        const row = this.contentList.dataTablePage().getRowElement(this.columns.name, rowName);
         BrowserVisibility.waitUntilElementIsVisible(row);
     }
 
@@ -705,6 +713,10 @@ export class ContentServicesPage {
     clickMultiSelectToggle() {
         BrowserVisibility.waitUntilElementIsClickable(this.multiSelectToggle);
         this.multiSelectToggle.click();
+    }
+
+    getRowByName(rowName) {
+        return this.contentList.dataTable.getRow(this.columns.name, rowName);
     }
 
 }
