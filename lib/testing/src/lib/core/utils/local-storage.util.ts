@@ -17,8 +17,17 @@
 
 import { browser } from 'protractor';
 
-export async function setConfigField(field: string, value: string) {
-    return browser.executeScript(
-        `window.adf.setConfigField('${field}', '${value}');`
-    );
+export class LocalStorageUtil {
+
+   static async setConfigField(field: string, value: string) {
+        return browser.executeScript(
+            `window.adf.setConfigField('${field}', '${value}');`
+        );
+    }
+
+    static async apiReset() {
+        return browser.executeScript(
+            `window.adf.apiReset();`
+        );
+    }
 }
