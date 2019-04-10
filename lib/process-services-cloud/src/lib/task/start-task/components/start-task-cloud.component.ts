@@ -32,7 +32,6 @@ import {
 } from '@alfresco/adf-core';
 import { PeopleCloudComponent } from './people-cloud/people-cloud.component';
 import { GroupCloudComponent } from '../../../../lib/group/public-api';
-import { FormCloud } from '../models/form-cloud.model';
 
 @Component({
     selector: 'adf-cloud-start-task',
@@ -98,7 +97,7 @@ export class StartTaskCloudComponent implements OnInit, OnDestroy {
 
     currentUser: IdentityUserModel;
 
-    forms$: Observable<FormCloud[]>;
+    formKey: string;
 
     private localeSub: Subscription;
     private createTaskSub: Subscription;
@@ -118,7 +117,6 @@ export class StartTaskCloudComponent implements OnInit, OnDestroy {
 
         this.loadCurrentUser();
         this.buildForm();
-        this.loadForms();
     }
 
     ngOnDestroy() {
@@ -135,14 +133,11 @@ export class StartTaskCloudComponent implements OnInit, OnDestroy {
         this.taskForm = this.formBuilder.group({
             name: new FormControl(this.name, [Validators.required, Validators.maxLength(this.getMaxNameLength()), this.whitespaceValidator]),
             priority: new FormControl(),
-            description: new FormControl('', [this.whitespaceValidator]),
-            formKey: new FormControl()
+            description: new FormControl('', [this.whitespaceValidator])
         });
     }
 
-    private loadForms() {
-        this.forms$ = this.taskService.getForms(this.appName);
-    }
+
 
     private getMaxNameLength(): number {
         return this.maxNameLength > StartTaskCloudComponent.MAX_NAME_LENGTH ?
@@ -160,7 +155,9 @@ export class StartTaskCloudComponent implements OnInit, OnDestroy {
         newTask.appName = this.appName;
         newTask.dueDate = this.dueDate;
         newTask.assignee = this.assigneeName;
+        newTask.formKey = this.formKey;
         newTask.candidateGroups = this.candidateGroupNames;
+
         this.createNewTask(new TaskDetailsCloudModel(newTask));
     }
 
@@ -225,5 +222,9 @@ export class StartTaskCloudComponent implements OnInit, OnDestroy {
 
     get priorityController(): AbstractControl {
         return this.taskForm.get('priority');
+    }
+
+    onFormSelect(formKey: string) {
+        this.formKey = formKey ? formKey : '';
     }
 }
