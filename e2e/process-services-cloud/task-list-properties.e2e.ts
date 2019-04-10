@@ -81,9 +81,10 @@ describe('Edit task filters and task list properties', () => {
             browser.driver.sleep(5000);
             configEditorPage.enterBigConfigurationText(`{
                        "filterProperties": [
-                           "appName",
-                           "status",
-                           "assignee",
+                            "taskId",
+                            "appName",
+                            "status",
+                            "assignee",
                             "taskName",
                             "parentTaskId",
                             "priority",
@@ -157,6 +158,28 @@ describe('Edit task filters and task list properties', () => {
 
             tasksCloudDemoPage.taskListCloudComponent().checkContentIsDisplayedByName(notDisplayedTask.entry.name);
             tasksCloudDemoPage.taskListCloudComponent().checkContentIsNotDisplayedByName(createdTask.entry.name);
+        });
+
+        it('[C291906] Should be able to see only the task with specific taskId when typing it in the task Id field', () => {
+            tasksCloudDemoPage.myTasksFilter().checkTaskFilterIsDisplayed();
+            expect(tasksCloudDemoPage.getActiveFilterName()).toBe('My Tasks');
+
+            tasksCloudDemoPage.editTaskFilterCloudComponent().setId(createdTask.entry.id);
+            expect(tasksCloudDemoPage.editTaskFilterCloudComponent().getId()).toEqual(createdTask.entry.id);
+            tasksCloudDemoPage.taskListCloudComponent().checkContentIsDisplayedByName(createdTask.entry.id);
+            tasksCloudDemoPage.taskListCloudComponent().getRowsWithSameName(createdTask.entry.id).then((list) => {
+                expect(list.length).toEqual(1);
+            });
+        });
+
+        it('[C291907] Should be able to see No tasks found when typing an invalid task id', () => {
+            tasksCloudDemoPage.myTasksFilter().checkTaskFilterIsDisplayed();
+            expect(tasksCloudDemoPage.getActiveFilterName()).toBe('My Tasks');
+
+            tasksCloudDemoPage.editTaskFilterCloudComponent().setId('invalidId');
+            expect(tasksCloudDemoPage.editTaskFilterCloudComponent().getId()).toEqual('invalidId');
+
+            expect(tasksCloudDemoPage.taskListCloudComponent().getNoTasksFoundMessage()).toEqual(noTasksFoundMessage);
         });
 
         it('[C297476] Filter by taskName', () => {
